@@ -1,24 +1,21 @@
-//int input_pin = null;      //won't be using right now.
-int output_pin = 11;
-int ir_receiver_pin = A0;
-
+//Pin Configurations
+//int input_pin = 3;           //Pin 2 on ATtiny
+int ir_receiver_pin = A0;   //Pin 3 on ATtiny
+int output_pin = 11;          //Pin 6 on ATtiny
 
 void setup() {
-  //Just for debugging:
+  // put your setup code here, to run once:
   Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   int x = analogRead(ir_receiver_pin);
-  float y = 0.000004*x*x*x - 0.0013*x*x + 0.1567*x + 7.9254;
-  int out_value = map(y, 7.5, 30, 255, 0);
+  float y = .000003*x*x*x - 0.0007*x*x + 0.1079*x + 8.2076;
+  int out_value = map(y, 7, 41, 255, 0);
 
-  if(x>250)
+  if (out_value < 9)
     out_value = 0;
-
+  
   analogWrite(output_pin, out_value);
-  Serial.print(x); Serial.print("---");
-  Serial.print(y); Serial.print("---");
   Serial.println(out_value);
 }
